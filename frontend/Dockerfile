@@ -6,7 +6,8 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# serve stage
+# Stage 2: Serve app with nginx server
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
