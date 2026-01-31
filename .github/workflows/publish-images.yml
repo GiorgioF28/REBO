@@ -23,10 +23,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Lowercase Repo Name
-        id: lowercase_repo
-        run: |
-          echo "repo=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
 
       - name: Build & push backend
         uses: docker/build-push-action@v6
@@ -34,8 +36,8 @@ jobs:
           context: ./backend
           push: true
           tags: |
-            ghcr.io/${{ steps.lowercase_repo.outputs.repo }}/backend:latest
-            ghcr.io/${{ steps.lowercase_repo.outputs.repo }}/backend:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/backend:latest
+            ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
 
       - name: Build & push frontend
         uses: docker/build-push-action@v6
@@ -43,5 +45,5 @@ jobs:
           context: ./frontend
           push: true
           tags: |
-            ghcr.io/${{ steps.lowercase_repo.outputs.repo }}/frontend:latest
-            ghcr.io/${{ steps.lowercase_repo.outputs.repo }}/frontend:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/frontend:latest
+            ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}

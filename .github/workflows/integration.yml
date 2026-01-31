@@ -15,13 +15,13 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_DB: app
-          POSTGRES_USER: app
-          POSTGRES_PASSWORD: app
+          POSTGRES_DB: rebo
+          POSTGRES_USER: rebo
+          POSTGRES_PASSWORD: rebo
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U app -d app"
+          --health-cmd "pg_isready -U rebo -d rebo"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -38,9 +38,9 @@ jobs:
       - name: Run integration profile tests
         env:
           SPRING_PROFILES_ACTIVE: test
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/app
-          SPRING_DATASOURCE_USERNAME: app
-          SPRING_DATASOURCE_PASSWORD: app
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/rebo
+          SPRING_DATASOURCE_USERNAME: rebo
+          SPRING_DATASOURCE_PASSWORD: rebo
         run: |
           chmod +x mvnw
           ./mvnw -B test
