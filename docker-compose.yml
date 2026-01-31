@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: rebo-db
+    environment:
+      POSTGRES_DB: rebo
+      POSTGRES_USER: rebo
+      POSTGRES_PASSWORD: rebo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rebo -d rebo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
